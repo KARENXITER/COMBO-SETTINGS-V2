@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMBO SETTINGS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(to right, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        .file-upload {
+            margin-bottom: 25px;
+        }
+
+        .file-upload label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: center;
+            height: 20px;
+        }
+
+        .countdown-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .countdown {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .countdown-label {
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .combo-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .combo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .combo-btn:active {
+            transform: translateY(1px);
+        }
+
+        .combo-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .combo-btn:hover::before {
+            left: 100%;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1>COMBO SETTINGS</h1>
+        <p class="subtitle">Upload your files and activate the combo</p>
+        
+        <div class="file-upload">
+            <label for="file1">FILE 1</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="file1" name="file1">
+                <label for="file1" class="file-input-label">
+                    Click to upload or drag and drop
+                </label>
+            </div>
+            <div class="file-name" id="file1-name"></div>
+        </div>
+        
+        <div class="file-upload">
+            <label for="file2">FILE 2</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="file2" name="file2">
+                <label for="file2" class="file-input-label">
+                    Click to upload or drag and drop
+                </label>
+            </div>
+            <div class="file-name" id="file2-name"></div>
+        </div>
+        
+        <div class="countdown-container">
+            <div class="countdown-label">Combo will activate in:</div>
+            <div class="countdown" id="countdown">00:00:00</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+        
+        <button class="combo-btn" id="combo-btn">COMBO</button>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            particlesContainer.appendChild(particle);
+        }
+
+        // File upload handling
+        const file1Input = document.getElementById('file1');
+        const file2Input = document.getElementById('file2');
+        const file1Name = document.getElementById('file1-name');
+        const file2Name = document.getElementById('file2-name');
+
+        file1Input.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                file1Name.textContent = this.files[0].name;
+            } else {
+                file1Name.textContent = '';
+            }
+        });
+
+        file2Input.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                file2Name.textContent = this.files[0].name;
+            } else {
+                file2Name.textContent = '';
+            }
+        });
+
+        // Countdown functionality
+        let countdownInterval;
+        let totalSeconds = 0;
+        const countdownElement = document.getElementById('countdown');
+        const progressElement = document.getElementById('progress');
+        const comboBtn = document.getElementById('combo-btn');
+        const notification = document.getElementById('notification');
+
+        // Load saved countdown from localStorage
+        function loadCountdown() {
+            const savedTime = localStorage.getItem('comboCountdown');
+            if (savedTime) {
+                totalSeconds = parseInt(savedTime);
+                updateCountdown();
+            }
+        }
+
+        // Save countdown to localStorage
+        function saveCountdown() {
+            localStorage.setItem('comboCountdown', totalSeconds.toString());
+        }
+
+        // Update countdown display
+        function updateCountdown() {
+            if (totalSeconds <= 0) {
+                clearInterval(countdownInterval);
+                countdownElement.textContent = "COMBO ACTIVATED!";
+                progressElement.style.width = "100%";
+                showNotification("Combo has been activated!");
+                return;
+            }
+
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            countdownElement.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update progress bar (assuming 10 minutes max for demo)
+            const maxSeconds = 600; // 10 minutes
+            const progressPercent = Math.min(100, ((maxSeconds - totalSeconds) / maxSeconds) * 100);
+            progressElement.style.width = `${progressPercent}%`;
+            
+            totalSeconds--;
+            saveCountdown();
+        }
+
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Start countdown when combo button is clicked
+        comboBtn.addEventListener('click', function() {
+            if (!file1Input.files[0] || !file2Input.files[0]) {
+                showNotification("Please upload both files!");
+                return;
+            }
+
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            totalSeconds = 600; // 10 minutes for demo
+            saveCountdown();
+            
+            countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+            
+            showNotification("Combo sequence initiated!");
+        });
+
+        // Initialize
+        loadCountdown();
+    </script>
+</body>
+</html>
